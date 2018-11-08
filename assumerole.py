@@ -1,5 +1,5 @@
 import argparse
-import boto3
+import botocore.session
 import os
 import subprocess
 import sys
@@ -12,7 +12,7 @@ parser.add_argument("argv", nargs="+", help="Argv for the subcommand to run")
 
 def main():
     args = parser.parse_args()
-    res = boto3.client("sts").assume_role(
+    res = botocore.session.get_session().create_client("sts").assume_role(
         RoleArn=args.role_arn,
         RoleSessionName=args.role_session_name
     )
