@@ -16,15 +16,17 @@ def main():
         RoleArn=args.role_arn,
         RoleSessionName=args.role_session_name
     )
-    return subprocess.call(
-        args.argv,
-        env=dict(
-            {} if args.empty_environ else os.environ,
-            AWS_ACCESS_KEY_ID=res["Credentials"]["AccessKeyId"],
-            AWS_SECRET_ACCESS_KEY=res["Credentials"]["SecretAccessKey"],
-            AWS_SESSION_TOKEN=res["Credentials"]["SessionToken"]
-        )
+
+    env = dict(
+        AWS_ACCESS_KEY_ID=res["Credentials"]["AccessKeyId"],
+        AWS_SECRET_ACCESS_KEY=res["Credentials"]["SecretAccessKey"],
+        AWS_SESSION_TOKEN=res["Credentials"]["SessionToken"]
     )
+    if not args.empty_environ:
+        env = dict(os.environ, **env)
+        del env["AWS_SECURITY_TOKEN"]
+
+    return subprocess.call(args.argv, env=env)
 
 if __name__ == "__main__":
     sys.exit(main())
