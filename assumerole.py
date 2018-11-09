@@ -19,7 +19,7 @@ def main():
     return subprocess.call(
         args.argv,
         env=dict(
-            {} if args.clean_environ else os.environ,
+            {} if args.empty_environ else os.environ,
             AWS_ACCESS_KEY_ID=res["Credentials"]["AccessKeyId"],
             AWS_SECRET_ACCESS_KEY=res["Credentials"]["SecretAccessKey"],
             AWS_SESSION_TOKEN=res["Credentials"]["SessionToken"]
