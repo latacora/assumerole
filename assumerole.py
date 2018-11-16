@@ -24,7 +24,7 @@ def main():
     )
     if not args.empty_environ:
         env = dict(os.environ, **env)
-        del env["AWS_SECURITY_TOKEN"]
+        env.pop("AWS_SECURITY_TOKEN", None)
 
     return subprocess.call(args.argv, env=env)
 
